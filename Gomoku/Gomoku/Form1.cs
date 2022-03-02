@@ -12,9 +12,60 @@ namespace Gomoku
 {
     public partial class Form1 : Form
     {
+
+        Game game = new Game();
         public Form1()
         {
             InitializeComponent();
+
+        }
+
+        private void Form1_MouseDown(object sender, MouseEventArgs e)
+        {
+
+
+            Piece piece = game.PlaceAPiece(e.X, e.Y);//e.X, e.Y為滑鼠座標位置
+            if (piece != null)
+            {
+                this.Controls.Add(piece);
+
+
+                //檢查獲勝
+                if (game.Winner == PieceType.BLACK)
+                {
+                    MessageBox.Show("黑色獲勝!!");
+                    Init();
+                }
+                else if (game.Winner == PieceType.WHITE)
+                {
+                    MessageBox.Show("白色獲勝!!");
+                    Init();
+                }
+
+            }
+        }
+
+        private void Form1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (game.CanBePlaced(e.X, e.Y))
+                this.Cursor = Cursors.Hand;
+            else
+                this.Cursor = Cursors.Default;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //Init();
+        }
+        private void Init()
+        {
+            Controls.Clear();
+            game.gameReset();
+            //Controls.Add(button1);
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
         }
     }
 }
